@@ -17,6 +17,7 @@ workflow Bakta {
         strain:              "[Default: \'\'] strain to pass to bakta"
         gram:                "[Default: \'?\'] Is this bacteria gram \'+\' or \'-\' ?"
         locus_tag_prefix:    "Optional: NCBI assigned locus tag prefix."
+        proteins:            "Optional: Optional: Supply a .fasta or a .gbk file for ref-based annotation"
         keep_contig_headers: "Optional:keep contig headers of input assembly."
         metagenome:          "Optional:"
         skip_trna:           "Optional: Skip annotation stage: trna"
