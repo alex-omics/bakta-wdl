@@ -17,6 +17,7 @@ workflow Bakta {
         strain:              "[Default: \'\'] strain to pass to bakta"
         gram:                "[Default: \'?\'] Is this bacteria gram \'+\' or \'-\' ?"
         locus_tag_prefix:    "Optional: NCBI assigned locus tag prefix."
+        proteins:            "Optional: Supply a .fasta or .gbk file for ref-based annotation"
         keep_contig_headers: "Optional:keep contig headers of input assembly."
         metagenome:          "Optional:"
         skip_trna:           "Optional: Skip annotation stage: trna"
@@ -45,6 +46,7 @@ workflow Bakta {
             String? strain
             String? locus_tag_prefix
             String gram = "?"
+            File? proteins
             Boolean? keep_contig_headers
             Boolean? metagenome
             Boolean? skip_trna
@@ -75,6 +77,7 @@ workflow Bakta {
             locus_tag_prefix = locus_tag_prefix,
             gram = gram,
             keep_contig_headers = keep_contig_headers,
+            proteins = proteins,
             metagenome = metagenome,
             skip_trna = skip_trna,
             skip_tmrna = skip_tmrna,
@@ -121,6 +124,7 @@ task Annotate {
         strain:              "[Default: \'\'] strain to pass to bakta"
         gram:                "[Default: \'?\'] Is this bacteria gram \'+\' or \'-\' ?"
         locus_tag_prefix:    "Optional: NCBI assigned locus tag prefix."
+        proteins:            "Optional: Supply a .fasta or .gbk file for ref-based annotation"
         keep_contig_headers: "Optional:keep contig headers of input assembly."
         metagenome:          "Optional:"
         skip_trna:           "Optional: Skip annotation stage: trna"
@@ -150,6 +154,7 @@ task Annotate {
         String? strain
         String? locus_tag_prefix
         String gram = "?"
+        File? proteins
         Boolean? keep_contig_headers
         Boolean? metagenome
         Boolean? skip_trna
@@ -192,6 +197,7 @@ task Annotate {
             ~{if complete                     then "--complete"                             else ""} \
             ~{if ncbi_compliant               then "--compliant"                            else ""} \
             ~{if defined(locus_tag_prefix)    then "--locus-tag '" + locus_tag_prefix + "'" else ""} \
+            ~{if defined(proteins)            then "--proteins '" + proteins + "'"          else ""} \
             ~{if defined(keep_contig_headers) then "--keep-contig-headers"                  else ""} \
             ~{if defined(metagenome)          then "--meta"                                 else ""} \
             ~{if defined(skip_trna)           then "--skip-trna"                            else ""} \
