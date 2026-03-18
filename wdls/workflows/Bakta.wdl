@@ -45,6 +45,7 @@ workflow Bakta {
             String? strain
             String? locus_tag_prefix
             String gram = "?"
+            File? proteins
             Boolean? keep_contig_headers
             Boolean? metagenome
             Boolean? skip_trna
@@ -74,6 +75,7 @@ workflow Bakta {
             strain = strain,
             locus_tag_prefix = locus_tag_prefix,
             gram = gram,
+            proteins = proteins,
             keep_contig_headers = keep_contig_headers,
             metagenome = metagenome,
             skip_trna = skip_trna,
@@ -121,7 +123,8 @@ task Annotate {
         strain:              "[Default: \'\'] strain to pass to bakta"
         gram:                "[Default: \'?\'] Is this bacteria gram \'+\' or \'-\' ?"
         locus_tag_prefix:    "Optional: NCBI assigned locus tag prefix."
-        keep_contig_headers: "Optional:keep contig headers of input assembly."
+        proteins:            "Optional: Supply a .fasta or a .gbk file for ref-based annotation"
+        keep_contig_headers: "Optional: Keep contig headers of input assembly."
         metagenome:          "Optional:"
         skip_trna:           "Optional: Skip annotation stage: trna"
         skip_tmrna:          "Optional: Skip annotation stage: tmrna"
@@ -151,6 +154,7 @@ task Annotate {
         String? locus_tag_prefix
         String gram = "?"
         Boolean? keep_contig_headers
+        File? proteins
         Boolean? metagenome
         Boolean? skip_trna
         Boolean? skip_tmrna
@@ -193,6 +197,7 @@ task Annotate {
             ~{if ncbi_compliant               then "--compliant"                            else ""} \
             ~{if defined(locus_tag_prefix)    then "--locus-tag '" + locus_tag_prefix + "'" else ""} \
             ~{if defined(keep_contig_headers) then "--keep-contig-headers"                  else ""} \
+            ~{if defined(proteins)            then "--proteins '" + proteins + "'"          else ""} \
             ~{if defined(metagenome)          then "--meta"                                 else ""} \
             ~{if defined(skip_trna)           then "--skip-trna"                            else ""} \
             ~{if defined(skip_tmrna)          then "--skip-tmrna"                           else ""} \
